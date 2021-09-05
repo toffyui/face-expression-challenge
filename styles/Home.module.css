@@ -1,6 +1,5 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,12 +13,14 @@
   display: table;
   text-align: center;
   width: 100%;
+  background: #333c5f;
 }
 
 .header .title {
   display: table-cell;
   vertical-align: middle;
   font-size: 25px;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -39,6 +40,4 @@
   top: 20px;
   right: 0;
   margin: auto;
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
 }
