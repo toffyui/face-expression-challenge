@@ -143,8 +143,6 @@ export default function Home() {
 
   const faceDetectHandler = (subject: string) => {
     setIsLoaded(true);
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
     const video = webcamRef.current.video;
     const intervalHandler = setInterval(async () => {
       const detectionsWithExpressions = await faceapi
