@@ -178,7 +178,7 @@ export default function Home() {
       <div className={styles.container}>
         <Head>
           <title>Face Expression Challenge</title>
-          <meta name="description" content="Mask Emoji to your face" />
+          <meta name="description" content="Face Expression Challenge" />
           <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
           <link rel="icon" href="/emojis/happy.png" />
         </Head>
