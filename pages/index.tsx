@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Start from "../components/Start";
 import { coverCanvas } from "../utils/coverCanvas";
 import { drawText } from "../utils/drawText";
+import { levelConfig } from "../utils/levelConfig";
 import { ExpressionTypes } from "../models/expressions";
 
 export default function Home() {
@@ -16,10 +17,14 @@ export default function Home() {
   const [isStart, setIsStart] = useState<boolean>(false);
   const [isMatch, setIsMatch] = useState<boolean>(false);
   const [gameCount, setGameCount] = useState<number>(0);
+  const [subjectExpression, setSubjectExpression] = useState<string>();
   const [point, setPoint] = useState<number>(0);
   const [intervalHandler, setIntervalHandler] = useState<NodeJS.Timer>();
+  const [secCount, setSecCount] = useState<number>(0);
+  const [playCount, setPlayCount] = useState<number>(0);
+  const [level, setLevel] = useState<"EASY" | "NORMAL" | "HARD">("HARD");
   const [stage, setStage] = useState<
-    "isNotStart" | "ready" | "start" | "judge" | "finish"
+    "isNotStart" | "ready" | "start" | "judge" | "result" | "finish"
   >("isNotStart");
 
   const handleStart = () => {
@@ -76,23 +81,41 @@ export default function Home() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (stage === "judge") {
-      judge(ctx, canvas);
+    if (stage === "result") {
+      drawResult(ctx, canvas);
+      if (playCount < levelConfig[level].time * 10) {
+        // 判定後、1500sでゲーム再開する
+        setTimeout(() => {
+          setStage("start");
+        }, 1500);
+      }
     }
     if (stage === "start") {
       const expression =
         ExpressionTypes[Math.floor(Math.random() * ExpressionTypes.length)];
+      setSubjectExpression(expression);
       drawSubject(expression);
+      setTimeout(() => {
+        setStage("judge");
+      }, 1500);
+    }
+    if (stage === "judge") {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      judgeHandler(subjectExpression);
     }
     if (stage === "finish") {
-      setTimeout(() => {
-        coverCanvas(ctx, canvas);
-        drawText(ctx, canvas, `${point}／5`);
-      }, 1500);
+      if (intervalHandler) {
+        clearInterval(intervalHandler);
+      }
+      coverCanvas(ctx, canvas);
+      drawText(ctx, canvas, `${point}／${gameCount}`);
     }
   }, [stage]);
 
-  const judge = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+  const drawResult = (
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement
+  ) => {
     if (!isMatch) {
       coverCanvas(ctx, canvas);
       drawText(ctx, canvas, "BAD");
@@ -101,21 +124,10 @@ export default function Home() {
       coverCanvas(ctx, canvas);
       drawText(ctx, canvas, "GOOD");
     }
-    if (gameCount > 4) {
-      // gameCountが5回のときタイマーを止める
-      setStage("finish");
-      return;
-    }
-    // 判定後、1500sでゲーム再開する
-    setTimeout(() => {
-      setStage("start");
-    }, 1500);
   };
 
   const drawSubject = (expression: string) => {
     setGameCount((gameCount) => gameCount + 1);
-    setIsMatch(false);
-    faceDetectHandler(expression);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const image = document.createElement("img");
@@ -130,36 +142,46 @@ export default function Home() {
       );
     };
     image.src = `/emojis/${expression}.png`;
-    if (intervalHandler) {
-      clearInterval(intervalHandler);
-    }
-    setTimeout(() => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }, 1500);
-    setTimeout(() => {
-      setStage("judge");
-    }, 3000);
   };
 
-  const faceDetectHandler = (subject: string) => {
-    setIsLoaded(true);
+  useEffect(() => {
+    if (secCount === 30) {
+      clearInterval(intervalHandler);
+      setStage("result");
+    }
+    if (playCount === levelConfig[level].time * 10) {
+      if (intervalHandler) {
+        clearInterval(intervalHandler);
+      }
+      setStage("finish");
+    }
+  }, [secCount, playCount]);
+
+  const judgeHandler = (subject: string) => {
+    setSecCount(0);
+    setIsMatch(false);
     const video = webcamRef.current.video;
     const intervalHandler = setInterval(async () => {
-      const detectionsWithExpressions = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      setSecCount((sec) => sec + 1);
+      setPlayCount((sec) => sec + 1);
+      const detectionsWithExpression = await faceapi
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
         .withFaceExpressions();
-      if (detectionsWithExpressions.length > 0) {
-        detectionsWithExpressions.map((detectionsWithExpression) => {
-          const Array = Object.entries(detectionsWithExpression.expressions);
-          const scoresArray = Array.map((i) => i[1]);
-          const expressionsArray = Array.map((i) => i[0]);
-          const max = Math.max.apply(null, scoresArray);
-          const index = scoresArray.findIndex((score) => score === max);
-          const expression = expressionsArray[index];
-          if (expression === subject) {
-            setIsMatch(true);
-          }
-        });
+      if (detectionsWithExpression) {
+        const Array = Object.entries(detectionsWithExpression.expressions);
+        const scoresArray = Array.map((i) => i[1]);
+        const expressionsArray = Array.map((i) => i[0]);
+        const max = Math.max.apply(null, scoresArray);
+        const index = scoresArray.findIndex((score) => score === max);
+        const expression = expressionsArray[index];
+        if (
+          expression === subject &&
+          Array[index][1] >= levelConfig[level].threshold
+        ) {
+          clearInterval(intervalHandler);
+          setIsMatch(true);
+          setStage("result");
+        }
       }
     }, 100);
     setIntervalHandler(intervalHandler);
@@ -175,21 +197,21 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.container}>
-        <Head>
-          <title>Face Expression Challenge</title>
-          <meta name="description" content="Face Expression Challenge" />
-          <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
-          <link rel="icon" href="/emojis/happy.png" />
-        </Head>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Face Expression Challenge</h1>
-        </div>
-        <main className={styles.main}>
+      <Head>
+        <title>Face Expression Challenge</title>
+        <meta name="description" content="Face Expression Challenge" />
+        <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
+        <link rel="icon" href="/emojis/happy.png" />
+      </Head>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Face Expression Challenge</h1>
+      </div>
+      <main className={styles.main}>
+        <div className={styles.videoContainer}>
           <Webcam audio={false} ref={webcamRef} className={styles.video} />
           <canvas ref={canvasRef} className={styles.video} />
-        </main>
-      </div>
+        </div>
+      </main>
       {!isLoaded && <Loader />}
       {!isStart && <Start onClick={handleStart} />}
     </>
