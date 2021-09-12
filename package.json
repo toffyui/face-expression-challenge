@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-webcam": "^3.0.0",
+    "canvas": "2.6.1",
     "clsx": "^1.1.1",
     "face-api.js": "^0.22.2",
     "next": "11.0.1",
