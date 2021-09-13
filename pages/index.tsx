@@ -245,9 +245,14 @@ export default function Home() {
     <>
       <Head>
         <title>{t.title}</title>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_BASE_URL} />
         <meta name="description" content={t.metaDesc} />
+        <meta property="og:site_name" content={t.title} />
         <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
         <link rel="icon" href="/emojis/happy.png" />
+        <meta name="twitter:site" content="@yui_active" />
       </Head>
       <main className={styles.main}>
         <div className={styles.videoContainer}>
