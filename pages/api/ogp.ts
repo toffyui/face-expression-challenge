@@ -1,6 +1,8 @@
-import { Canvas, createCanvas, registerFont } from "canvas";
+import { Canvas, createCanvas, registerFont, loadImage } from "canvas";
 import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
+import { EnTexts } from "../../locales/en";
+import { JaTexts } from "../../locales/ja";
 
 interface SeparatedText {
   line: string;
@@ -9,7 +11,7 @@ interface SeparatedText {
 
 const createTextLine = (canvas: Canvas, text: string): SeparatedText => {
   const context = canvas.getContext("2d");
-  const MAX_WIDTH = 1000 as const;
+  const MAX_WIDTH = 800 as const;
 
   for (let i = 0; i < text.length; i += 1) {
     const line = text.substring(0, i + 1);
@@ -44,7 +46,8 @@ const createOgp = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const { id } = req.query;
+  const { mode, all, point, la } = req.query;
+  const t = la === "ja" ? JaTexts : EnTexts;
   const WIDTH = 1200 as const;
   const HEIGHT = 630 as const;
   const DX = 0 as const;
@@ -56,20 +59,38 @@ const createOgp = async (
     family: "Noto",
   });
 
-  ctx.fillStyle = "#FFF";
   ctx.fillRect(DX, DY, WIDTH, HEIGHT);
-
-  ctx.font = "60px ipagp";
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = "#333c5f";
+  ctx.font = "100px ipagp";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  const title = "入力した文字は" + String(id) + "なのねん";
+  const texts = t.share(t[mode as string], all, point);
 
-  const lines = createTextLines(canvas, title);
+  const backgroundImage = await loadImage(
+    path.resolve("./images/background.jpg")
+  );
+  ctx.drawImage(backgroundImage, 0, 0, WIDTH, HEIGHT);
+
+  const time = mode === "easy" ? 10 : "normal" ? 15 : "hard" ? 20 : 30;
+  let resultText: string;
+  const min = Math.ceil(time / 3);
+  if (Number(all) <= min) {
+    resultText = t.third;
+  } else if (Number(all) >= min * 2) {
+    resultText = t.first;
+  } else {
+    resultText = t.second;
+  }
+  ctx.fillText(resultText, 600, 130);
+
+  ctx.font = "60px ipagp";
+  const lines = createTextLines(canvas, texts);
   lines.forEach((line, index) => {
     const y = 314 + 80 * (index - (lines.length - 1) / 2);
     ctx.fillText(line, 600, y);
   });
+  ctx.font = "40px ipagp";
+  ctx.fillText(t.title, 850, 550);
 
   const buffer = canvas.toBuffer();
 

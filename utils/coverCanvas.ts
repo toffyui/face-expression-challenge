@@ -3,6 +3,6 @@ export const coverCanvas = (
   canvas: HTMLCanvasElement
 ) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#e0e7ff";
+  ctx.fillStyle = "#FDEBC8";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
