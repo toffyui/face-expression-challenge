@@ -50,9 +50,13 @@ const Page = ({ mode, all, point }: Props) => {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_BASE_URL} />
         <meta name="description" content={t.metaDesc} />
+        <meta property="og:title" content={t.title} />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content={t.metaDesc} />
         <meta property="og:site_name" content={t.title} />
         <link rel="icon" href="/emojis/happy.png" />
         <meta name="twitter:site" content="@yui_active" />
+        <meta name="twitter:creator" content="@yui_active" />
         <meta
           property="og:image"
           key="ogImage"
