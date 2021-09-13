@@ -29,17 +29,18 @@
 
 .button2 {
   cursor: pointer;
-  padding: 0.75em 2em;
   text-align: center;
   color: #333c5f;
   border: 2px solid #333c5f;
+  background: #fff;
   font-size: 24px;
   border-radius: 0.3em;
   transition: all 0.2s ease-in-out;
   position: relative;
   overflow: hidden;
-  width: 300px;
-  padding: 1rem 0;
+  width: 350px;
+  max-width: 95vw;
+  padding: 1rem 0.8rem;
   display: flex;
   align-items: center;
   margin: 5px auto;
@@ -84,7 +85,8 @@
 }
 
 .gameTitle {
-  width: 100px;
+  text-align: left;
+  width: 120px;
 }
 
 .star10_rating {
