@@ -39,7 +39,7 @@ const Page = ({ mode, all, point }: Props) => {
   const { locale } = useRouter();
   useEffect(() => {
     locale === "ja" ? router.push("/ja") : router.push("/");
-  }, []);
+  }, [locale]);
   const t = useTranlate();
 
   return (
