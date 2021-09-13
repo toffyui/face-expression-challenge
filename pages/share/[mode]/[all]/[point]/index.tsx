@@ -3,6 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Loader from "../../../../../components/Loader";
+import useTranlate from "../../../../../hooks/useTranslate";
 
 type Props = {
   mode: string;
@@ -39,10 +40,14 @@ const Page = ({ mode, all, point }: Props) => {
   useEffect(() => {
     locale === "ja" ? router.push("/ja") : router.push("/");
   }, []);
+  const t = useTranlate();
 
   return (
     <>
       <Head>
+        <title>{t.title}</title>
+        <meta name="description" content={t.metaDesc} />
+        <link rel="icon" href="/emojis/happy.png" />
         <meta
           property="og:image"
           key="ogImage"

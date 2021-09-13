@@ -4,6 +4,7 @@ export const EnTexts = {
   hard: "HARD",
   devil: "DEVIL",
   title: "Face Expression Challenge",
+  metaDesc: "Let's play with face expression",
   desc: "Make the same face as the subject.",
   limit: (sec: number) => `Time limit: ${sec} seconds`,
   rest: (sec: number) => `Remaining time: ${sec} seconds`,

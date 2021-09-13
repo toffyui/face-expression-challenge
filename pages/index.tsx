@@ -244,8 +244,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Face Expression Challenge</title>
-        <meta name="description" content="Face Expression Challenge" />
+        <title>{t.title}</title>
+        <meta name="description" content={t.metaDesc} />
         <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
         <link rel="icon" href="/emojis/happy.png" />
       </Head>

@@ -3,7 +3,8 @@ export const JaTexts = {
   normal: "普通",
   hard: "難しい",
   devil: "鬼",
-  title: "表情チャレンジ",
+  title: "表情筋チャレンジ",
+  metaDesc: "表情筋で遊ぼう！",
   desc: "お題と同じ表情をしてください",
   limit: (sec: number) => `制限時間${sec}秒`,
   rest: (sec: number) => `残り時間: ${sec}秒`,
@@ -16,5 +17,5 @@ export const JaTexts = {
     `あなたは${mode}モードに挑戦して${all}回中${point}回成功しました`,
   share: (mode, all, point) =>
     `${mode}モードに挑戦して${all}回中${point}回成功しました`,
-  hash: "表情チャレンジ",
+  hash: "表情筋チャレンジ",
 };
