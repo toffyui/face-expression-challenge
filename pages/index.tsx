@@ -234,10 +234,10 @@ export default function Home() {
     const hash = `#${t.hash}`;
     const shareUrl =
       locale === "ja"
-        ? process.env.NEXT_PUBLIC_SHARE_URL + "/ja"
-        : process.env.NEXT_PUBLIC_SHARE_URL;
+        ? process.env.NEXT_PUBLIC_BASE_URL + "/ja"
+        : process.env.NEXT_PUBLIC_BASE_URL;
     return (
-      `https://twitter.com/intent/tweet?url=${shareUrl}/${levelConfig[level].name}/${gameCount}/${point}&text=` +
+      `https://twitter.com/intent/tweet?url=${shareUrl}/share/${levelConfig[level].name}/${gameCount}/${point}&text=` +
       encodeURIComponent(shareText + `\r\n` + hash)
     );
   };
