@@ -14,9 +14,11 @@ import { drawProgressBar } from "../utils/drawProgressBar";
 import Button from "../components/Button";
 import useTranlate from "../hooks/useTranslate";
 import { drawResultCanvas } from "../utils/drawResultCanvas";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const t = useTranlate();
+  const { locale } = useRouter();
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -230,8 +232,12 @@ export default function Home() {
   const twitterURL = () => {
     const shareText = t.share(t[levelConfig[level].name], gameCount, point);
     const hash = `#${t.hash}`;
+    const shareUrl =
+      locale === "ja"
+        ? process.env.NEXT_PUBLIC_SHARE_URL + "/ja"
+        : process.env.NEXT_PUBLIC_SHARE_URL;
     return (
-      `https://twitter.com/intent/tweet?url=${process.env.NEXT_PUBLIC_SHARE_URL}/${levelConfig[level].name}/${gameCount}/${point}&text=` +
+      `https://twitter.com/intent/tweet?url=${shareUrl}/${levelConfig[level].name}/${gameCount}/${point}&text=` +
       encodeURIComponent(shareText + `\r\n` + hash)
     );
   };
