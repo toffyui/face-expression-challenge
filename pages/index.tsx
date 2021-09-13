@@ -91,10 +91,10 @@ export default function Home() {
     if (stage === "result") {
       drawResult(ctx, canvas);
       if (playCount < levelConfig[level].time * 10) {
-        // 判定後、1000sでゲーム再開する
+        // 判定後、1500msでゲーム再開する
         setTimeout(() => {
           setStage("start");
-        }, 1000);
+        }, 1500);
       }
     }
     if (stage === "start") {
@@ -104,7 +104,7 @@ export default function Home() {
       drawSubject(expression);
       setTimeout(() => {
         setStage("judge");
-      }, 1000);
+      }, 1500);
     }
     if (stage === "judge") {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
