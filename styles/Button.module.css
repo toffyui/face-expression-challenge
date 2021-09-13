@@ -1,0 +1,39 @@
+.tweet {
+  position: relative;
+  width: 150px;
+  padding: 10px 0;
+  font-size: 20px;
+  color: #fff;
+  background: #1c9bef;
+  border: none;
+  border-radius: 30px;
+}
+
+.restart {
+  position: relative;
+  width: 150px;
+  padding: 10px 0;
+  font-size: 20px;
+  color: #fff;
+  background: #333c5f;
+  border: none;
+  border-radius: 30px;
+}
+
+.tweet:hover,
+.restart:hover {
+  cursor: pointer;
+  -webkit-animation: button8 0.5s both;
+  animation: button8 0.5s both;
+}
+
+@keyframes button8 {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
