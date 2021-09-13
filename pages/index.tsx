@@ -231,7 +231,7 @@ export default function Home() {
     const shareText = t.share(t[levelConfig[level].name], gameCount, point);
     const hash = `#${t.hash}`;
     return (
-      `https://twitter.com/intent/tweet?url=${process.env.NEXT_PUBLIC_SHARE_URL}/${levelConfig[level]}/${gameCount}/${point}&text=` +
+      `https://twitter.com/intent/tweet?url=${process.env.NEXT_PUBLIC_SHARE_URL}/${levelConfig[level].name}/${gameCount}/${point}&text=` +
       encodeURIComponent(shareText + `\r\n` + hash)
     );
   };
