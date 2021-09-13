@@ -259,10 +259,24 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:description" content={t.metaDesc} />
         <meta property="og:site_name" content={t.title} />
-        <meta property="og:image" key="ogImage" content="/emojis/happy.png" />
         <link rel="icon" href="/emojis/happy.png" />
         <meta name="twitter:site" content="@yui_active" />
         <meta name="twitter:creator" content="@yui_active" />
+        <meta
+          property="og:image"
+          key="ogImage"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/defaultOgp.jpg`}
+        />
+        <meta
+          name="twitter:card"
+          key="twitterCard"
+          content="summary_large_image"
+        />
+        <meta
+          name="twitter:image"
+          key="twitterImage"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/defaultOgp.jpg`}
+        />
       </Head>
       <main className={styles.main}>
         <div className={styles.videoContainer}>
