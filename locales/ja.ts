@@ -18,4 +18,6 @@ export const JaTexts = {
   share: (mode, all, point) =>
     `${mode}モードに挑戦して${all}回中${point}回成功しました`,
   hash: "表情筋チャレンジ",
+  tweet: "ツイート",
+  restart: "最初から",
 };

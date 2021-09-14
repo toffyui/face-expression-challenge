@@ -62,6 +62,8 @@ export default function Home() {
 
   const StartGame = () => {
     setStage("ready");
+    setGameCount(0);
+    setPoint(0);
     if (webcamRef.current && canvasRef.current) {
       setIsLoaded(true);
       const webcam = webcamRef.current.video as HTMLVideoElement;
@@ -149,6 +151,10 @@ export default function Home() {
       drawText(ctx, canvas, t.good[random], "#fc2600");
     }
   };
+
+  useEffect(() => {
+    console.log(gameCount, point);
+  }, [gameCount, point]);
 
   const drawSubject = (expression: string) => {
     setGameCount((gameCount) => gameCount + 1);
@@ -285,12 +291,12 @@ export default function Home() {
         </div>
         {stage === "finish" && (
           <div className={styles.shareButton}>
-            <Button onClick={shareClick} text={"Tweet"} type="tweet" />
+            <Button onClick={shareClick} text={t.tweet} type="tweet" />
             <Button
               onClick={() => {
                 setStage("isNotStart"), setPlayCount(0);
               }}
-              text={"Restart"}
+              text={t.restart}
               type="restart"
             />
           </div>
