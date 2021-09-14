@@ -106,9 +106,11 @@ export default function Home() {
         ExpressionTypes[Math.floor(Math.random() * ExpressionTypes.length)];
       setSubjectExpression(expression);
       drawSubject(expression);
-      setTimeout(() => {
-        setStage("judge");
-      }, 1500);
+      if (playCount < levelConfig[level].time * 10) {
+        setTimeout(() => {
+          setStage("judge");
+        }, 1500);
+      }
     }
     if (stage === "judge") {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
