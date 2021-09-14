@@ -71,7 +71,20 @@ const createOgp = async (
   );
   ctx.drawImage(backgroundImage, 0, 0, WIDTH, HEIGHT);
 
-  const time = mode === "easy" ? 10 : "normal" ? 15 : "hard" ? 20 : 30;
+  let time: number;
+  switch (mode) {
+    case "easy":
+      time = 10;
+      break;
+    case "normal":
+      time = 15;
+      break;
+    case "hard":
+      time = 20;
+      break;
+    default:
+      time = 30;
+  }
   let resultText: string;
   const min = Math.ceil(time / 3);
   if (Number(all) <= min) {
