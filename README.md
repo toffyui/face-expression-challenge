@@ -2,9 +2,7 @@
 
 DEMO
 
-
-https://user-images.githubusercontent.com/43722788/132220202-074e7437-3b2d-430e-9434-4af5846e1eaa.mp4
-
+https://user-images.githubusercontent.com/43722788/133266516-a49a136e-bad8-493f-ad94-93144454847e.mov
 
 https://face-expression-challenge.vercel.app/
 
