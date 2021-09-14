@@ -152,10 +152,6 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    console.log(gameCount, point);
-  }, [gameCount, point]);
-
   const drawSubject = (expression: string) => {
     setGameCount((gameCount) => gameCount + 1);
     const canvas = canvasRef.current;
