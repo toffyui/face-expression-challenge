@@ -18,4 +18,6 @@ export const EnTexts = {
   share: (mode, all, point) =>
     `I challenged ${mode} mode, then I passed ${point}/${all}`,
   hash: "FaceExpressionChallenge",
+  tweet: "Tweet",
+  restart: "Restart",
 };
